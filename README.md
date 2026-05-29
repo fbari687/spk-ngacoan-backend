@@ -1,58 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SPK Ngacoan - Backend API (Laravel 13)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Repositori ini berisi backend API untuk Sistem Pendukung Keputusan (SPK) pemilihan supplier terbaik pada ekosistem bisnis Mie Ngacoan. Sistem ini mengimplementasikan algoritma EDAS (Evaluation based on Distance from Average Solution) dan menggunakan arsitektur decoupled (terpisah) dengan frontend Vue 3.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Fitur Utama & Cakupan Sistem
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Core Engine SPK (EDAS Algorithm)
+- Komputasi Otomatis: Perhitungan matriks perantara secara real-time meliputi Average Solution (AV), Positive Distance from Average (PDA), Negative Distance from Average (NDA), Weighted Sum (SP/SN), hingga akumulasi skor akhir Appraisal Score (AS).
+- Auditability: Menyediakan rincian koordinat matriks matematika beralur transparan untuk kebutuhan validasi akurasi rumus bagi tim penguji/sidang.
+- Sesi Riwayat: Pencatatan log permanen hasil keputusan akhir yang aman dari risiko Soft Deletes data master (Supplier/Kriteria).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Autentikasi & Otorisasi Tingkat Lanjut
+- Stateful API Authentication: Manajemen token aman menggunakan Laravel Sanctum.
+- Role-Based Access Control (RBAC): Pemisahan hak akses ketat antara Owner (Akses penuh CRUD data master, manajemen user, dan eksekusi EDAS) dan Pengelola (Hanya input nilai aktual matriks evaluasi harian).
+- Forgot Password via OTP: Alur pemulihan kata sandi modern menggunakan 6 digit kode OTP dinamis dengan proteksi kadaluwarsa token (15 menit).
 
-## Learning Laravel
+### 3. Database Integrity & Guarding
+- Menggunakan basis data PostgreSQL dengan penanganan kendala not-null constraint pada skema tabel users (kolom username) dan tabel decision_histories (kolom calculated_at).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Stack Teknologi
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Framework: Laravel 13.x
+- Language: PHP 8.3+
+- Database: PostgreSQL 16+
+- Authentication: Laravel Sanctum
+- Development Server: Laragon / PHP Artisan CLI
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Langkah Instalasi Lokal
 
+Ikuti panduan berikut untuk menjalankan proyek backend di komputer lokal Anda:
+
+### 1. Klon Repositori
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/USERNAME_KAMU/NAMA_REPO_BACKEND.git
+cd NAMA_REPO_BACKEND
+```
+### 2. Instalasi Dependensi Composer
+```bash
+composer install
+```
+### 3. Konfigurasi Environment File
+Salin file .env.example menjadi .env
+```bash
+cp .env.example .env
+```
+Buka file .env dan sesuaikan konfigurasi database PostgreSQL Anda:
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=ngacoan_db
+DB_USERNAME=postgres
+DB_PASSWORD=masukkan password
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 4. Masukkan data Mail di env
 
-## Contributing
+### 5. Generate Application Key
+```bash
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 6. Jalankan Database Migration & Seeder
+```bash
+php artisan migrate --seed
+```
 
-## Code of Conduct
+### 7. Bersihkan Optimasi Cache
+```bash
+php artisan config:clear
+php artisan route:clear
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 8. Jalankan Server Lokal
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+API kini dapat diakses melalui tautan default: http://127.0.0.1:8000/api/v1
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Dokumentasi Endpoint API (v1)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Endpoint Publik (Tanpa Login)
+- GET /api/v1/ping : Cek status koneksi server.
+- POST /api/v1/login : Otentikasi masuk pengguna & penerbitan token Sanctum.
+- POST /api/v1/forgot-password/send-otp : Mengirimkan 6 digit kode OTP ke log sistem.
+- POST /api/v1/forgot-password/reset : Memvalidasi OTP dan memperbarui kata sandi baru.
+
+### Endpoint Terproteksi (Wajib Bearer Token)
+#### Peran: Owner & Pengelola
+- GET /api/v1/me : Ambil profil pengguna yang sedang login.
+- POST /api/v1/logout : Mencabut token akses aktif.
+- GET /api/v1/criteria : Melihat daftar kriteria pembobotan.
+- GET /api/v1/suppliers : Melihat daftar supplier aktif.
+- GET /api/v1/evaluations : Melihat matriks nilai aktual evaluasi.
+- GET /api/v1/decision-histories : Melihat rangkuman riwayat keputusan masa lalu.
+- GET /api/v1/decision-histories/{id} : Melihat detail hasil perangkingan EDAS spesifik.
+
+#### Peran: Khusus Owner (Protected via role:owner Middleware)
+- POST /api/v1/calculate-edas : Memicu mesin kalkulasi algoritma EDAS untuk menghasilkan rekomendasi terbaik.
+- POST /api/v1/evaluations/bulk : Mengisi atau memperbarui nilai matriks aktual secara massal.
+- CRUD /api/v1/users : Manajemen data akun staf pengelola (Input manual username & proteksi self-delete).
+- CRUD /api/v1/criteria : Modifikasi penuh (Tambah/Edit/Hapus) bobot dan jenis kriteria.
+- CRUD /api/v1/suppliers : Modifikasi penuh data master supplier (Dilengkapi pengaman Soft Deletes).
+
+---
