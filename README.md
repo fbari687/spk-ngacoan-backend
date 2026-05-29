@@ -37,8 +37,8 @@ Ikuti panduan berikut untuk menjalankan proyek backend di komputer lokal Anda:
 
 ### 1. Klon Repositori
 ```bash
-git clone https://github.com/USERNAME_KAMU/NAMA_REPO_BACKEND.git
-cd NAMA_REPO_BACKEND
+git clone https://github.com/fbari687/spk-ngacoan-backend
+cd spk-ngacoan-backend
 ```
 ### 2. Instalasi Dependensi Composer
 ```bash
