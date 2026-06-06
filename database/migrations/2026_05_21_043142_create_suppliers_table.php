@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->text('address')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->string('phone')->nullable();
             $table->timestamps();
             $table->softDeletes();

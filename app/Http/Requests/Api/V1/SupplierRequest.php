@@ -18,6 +18,8 @@ class SupplierRequest extends BaseFormRequest
             return [
                 'name' => 'required|string|max:255',
                 'address' => 'nullable|string',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
                 'phone' => 'nullable|string|max:20',
             ];
         }
@@ -25,6 +27,8 @@ class SupplierRequest extends BaseFormRequest
         return [
             'name' => 'sometimes|required|string|max:255',
             'address' => 'nullable|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'phone' => 'nullable|string|max:20',
         ];
     }

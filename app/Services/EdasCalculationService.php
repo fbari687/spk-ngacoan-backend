@@ -118,7 +118,7 @@ class EdasCalculationService
 
             // 8. Simpan Sesi ke Tabel Historis (Tetap berjalan seperti biasa)
             $history = DecisionHistory::create([
-                'user_id' => auth()->id() ?: 1, // Atau Auth::id()
+                'user_id' => auth()->id() ?: 1,
                 'calculated_at' => now(),
             ]);
 
